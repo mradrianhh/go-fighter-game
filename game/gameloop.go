@@ -11,11 +11,17 @@ import (
 // loop() regains control, causing it to repeat.
 func Loop() {
 	for {
-		fmt.Println("Options\t|\t1 - View Stats\t2 - View Shop\t")
+		fmt.Print(separator)
+		fmt.Print("\nOptions\n")
+		fmt.Print("\n1 - View Stats | 2 - View Shop | 0 - Exit to Main Menu\n")
 		if _, err := fmt.Scan(&response); err == nil {
 			switch response {
 			case 1:
+				ShowStats()
 			case 2:
+				ShowShop()
+			case 0:
+				ShowMainMenu()
 			default:
 				commentary.WrongInput()
 			}

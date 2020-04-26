@@ -8,18 +8,7 @@ package main
 
 import (
 	"github.com/mradrianhh/go-fighter-game/game"
-	"github.com/mradrianhh/go-fighter-game/models"
 )
-
-var shop models.Shop
-
-// Player is the user playing the game.
-var Player models.Player
-
-func init() {
-	shop = models.NewShop()
-	Player = models.Player{Name: "Adrian", Damage: 10, Health: 100, Gold: 0}
-}
 
 func main() {
 	game.ShowMainMenu()
