@@ -19,14 +19,16 @@ import (
 func ShowShop() {
 	for {
 		fmt.Print(separator)
+		fmt.Printf("\n\tPlayer %d\n", currentPlayer.Number)
+		fmt.Print(separator)
 		fmt.Print("\nShop\n")
 		fmt.Print("\n1 - View Shop Items | 2 - View Own Items | 3 - Back\n")
 		if _, err := fmt.Scan(&response); err == nil {
 			switch response {
 			case 1:
-				ShowShopItems(&shop, &Player)
+				ShowShopItems(&shop, &currentPlayer)
 			case 2:
-				ShowOwnItems(&Player)
+				ShowOwnItems(&currentPlayer)
 			case 3:
 				goto end
 			default:

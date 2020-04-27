@@ -2,7 +2,25 @@ package models
 
 import (
 	"errors"
+	"fmt"
+	"time"
 )
+
+// ResetType is the type that can be tested against in the "Reset()"-method.
+type ResetType = string
+
+// List of reset types that can be passed to "Reset()".
+const (
+	ToTrainingOpponent = ResetType("ToTrainingOpponent")
+	ToTrainingPlayer   = ResetType("ToTrainingPlayer")
+	ToDefault          = ResetType("ToDefault")
+)
+
+type stats struct {
+	Damage int
+	Health int
+	Armor  int
+}
 
 // Player will be controlled by the user.
 //
@@ -10,21 +28,30 @@ import (
 // and a gold stat. Future changes may incurr.
 type Player struct {
 	Name      string
-	Damage    int
-	Health    int
-	Armor     int
+	Number    int
+	Stats     stats
 	Gold      int
 	Inventory Inventory
 }
 
+// PlayerList is the list of all players in the game.
+var PlayerList []Player
+
+func init() {
+	PlayerList = append(PlayerList, NewPlayer("Adrian", 1), NewPlayer("Jack", 2))
+}
+
 // NewPlayer creates and initializes a new player with the correct default values and given name.
-func NewPlayer(name string) Player {
+func NewPlayer(name string, number int) Player {
 	return Player{
 		Name:   name,
-		Damage: 10,
-		Health: 100,
-		Armor:  20,
-		Gold:   0,
+		Number: number,
+		Stats: stats{
+			Damage: 10,
+			Armor:  20,
+			Health: 100,
+		},
+		Gold: 0,
 		Inventory: Inventory{
 			DamageItem,
 			ArmorItem,
@@ -36,11 +63,6 @@ func NewPlayer(name string) Player {
 
 // NewPlayerTrainer returns a player that is initialized to be used in training by the user.
 func NewPlayerTrainer() Player {
-	sword := Item{Name: "Sword", Cost: 10, DamageIncrease: 10, HealthIncrease: 0, ArmorIncrease: 0}
-	chainVest := Item{Name: "Chainvest", Cost: 10, DamageIncrease: 0, HealthIncrease: 0, ArmorIncrease: 10}
-	lifeFountain := Item{Name: "Life Fountain", Cost: 10, DamageIncrease: 0, HealthIncrease: 10, ArmorIncrease: 10}
-	healthPot := Item{Name: "Health Pot", Cost: 1, DamageIncrease: 0, HealthIncrease: 20, ArmorIncrease: 0, Description: "+20 Health"}
-
 	return Player{
 		Name:   "Player",
 		Damage: 10,
@@ -48,10 +70,10 @@ func NewPlayerTrainer() Player {
 		Armor:  20,
 		Gold:   0,
 		Inventory: Inventory{
-			sword,
-			chainVest,
-			lifeFountain,
-			healthPot,
+			DamageItems["sword"],
+			ArmorItems["chainvest"],
+			HealthItems["lifefountain"],
+			AuxiliaryItems["healthpot"],
 		},
 	}
 }
@@ -73,12 +95,65 @@ func NewEnemyTrainer() Player {
 	}
 }
 
+// Reset changes everything but the name back to training or default specifications based on the reset type provided.
+func (player *Player) Reset(resetType ResetType) error {
+	switch resetType {
+	case ToTrainingPlayer:
+		player = &Player{
+			Name:   player.Name,
+			Damage: 10,
+			Health: 100,
+			Armor:  20,
+			Gold:   0,
+			Inventory: Inventory{
+				DamageItems["sword"],
+				ArmorItems["chainvest"],
+				HealthItems["lifefountain"],
+				AuxiliaryItems["healthpot"],
+			},
+		}
+		return nil
+	case ToTrainingOpponent:
+		player = &Player{
+			Name:   player.Name,
+			Damage: 10,
+			Health: 100,
+			Armor:  20,
+			Gold:   0,
+			Inventory: Inventory{
+				DamageItem,
+				ArmorItem,
+				HealthItem,
+				AuxiliaryItem,
+			},
+		}
+		return nil
+	case ToDefault:
+		player = &Player{
+			Name:   player.Name,
+			Damage: 10,
+			Health: 100,
+			Armor:  20,
+			Gold:   0,
+			Inventory: Inventory{
+				DamageItem,
+				ArmorItem,
+				HealthItem,
+				AuxiliaryItem,
+			},
+		}
+		return nil
+	default:
+		return errors.New("not a ResetType")
+	}
+}
+
 // UpdateStats updates the players current stats based on his inventory.
 func (player *Player) UpdateStats() {
 	for i := 0; i < len(player.Inventory)-1; i++ {
-		player.Damage += player.Inventory[i].DamageIncrease
-		player.Armor += player.Inventory[i].ArmorIncrease
-		player.Health += player.Inventory[i].HealthIncrease
+		player.Stats.Damage += player.Inventory[i].DamageIncrease
+		player.Stats.Armor += player.Inventory[i].ArmorIncrease
+		player.Stats.Health += player.Inventory[i].HealthIncrease
 	}
 }
 
@@ -170,22 +245,29 @@ func (player *Player) SellAuxiliaryItem() {
 
 // ConsumeAuxiliaryItem adds the auxiliary item's stats to the player, then removes it.
 func (player *Player) ConsumeAuxiliaryItem() error {
+	fmt.Print("\nConsuming...\n")
+	time.Sleep(1 * time.Second)
 	if player.Inventory[3] == AuxiliaryItem {
 		return errors.New("can't consume placeholder item")
 	}
-	player.Damage += player.Inventory[3].DamageIncrease
-	player.Armor += player.Inventory[3].ArmorIncrease
-	player.Health += player.Inventory[3].HealthIncrease
+
+	player.Stats.Damage += player.Inventory[3].DamageIncrease
+	player.Stats.Armor += player.Inventory[3].ArmorIncrease
+	player.Stats.Health += player.Inventory[3].HealthIncrease
 
 	return nil
 }
 
 // Attack damages the opponent.
-func (player *Player) Attack() {
-
+func (player *Player) Attack(target *Player) {
+	fmt.Print("\nAttacking...\n")
+	time.Sleep(1 * time.Second)
+	target.Health -= player.Damage
 }
 
 // Defend increases the health of the player by his armor.
 func (player *Player) Defend() {
+	fmt.Print("\nDefending...\n")
+	time.Sleep(1 * time.Second)
 	player.Health += player.Armor
 }
