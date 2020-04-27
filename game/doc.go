@@ -23,4 +23,13 @@
 //
 // Shop:
 // 	Works with the same inventory system. Only stocks one damage item, one armor item, etc. Changes over time.
+//
+// Fighting(singleplayer):
+// 	- Player turn
+// 	- Enemy turn
+// 	Options:
+//	 - Attack
+// 	 - Defend
+// 	 - Consume auxiliary
+// 	 - View Opponent
 package game

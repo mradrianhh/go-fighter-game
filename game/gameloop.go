@@ -28,3 +28,9 @@ func Loop() {
 		}
 	}
 }
+
+// NextTurn increases "turn" by one and changes whether it's the players turn or not.
+func NextTurn() {
+	playersTurn = !playersTurn
+	turn++
+}

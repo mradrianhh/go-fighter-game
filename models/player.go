@@ -34,6 +34,45 @@ func NewPlayer(name string) Player {
 	}
 }
 
+// NewPlayerTrainer returns a player that is initialized to be used in training by the user.
+func NewPlayerTrainer() Player {
+	sword := Item{Name: "Sword", Cost: 10, DamageIncrease: 10, HealthIncrease: 0, ArmorIncrease: 0}
+	chainVest := Item{Name: "Chainvest", Cost: 10, DamageIncrease: 0, HealthIncrease: 0, ArmorIncrease: 10}
+	lifeFountain := Item{Name: "Life Fountain", Cost: 10, DamageIncrease: 0, HealthIncrease: 10, ArmorIncrease: 10}
+	healthPot := Item{Name: "Health Pot", Cost: 1, DamageIncrease: 0, HealthIncrease: 20, ArmorIncrease: 0, Description: "+20 Health"}
+
+	return Player{
+		Name:   "Player",
+		Damage: 10,
+		Health: 100,
+		Armor:  20,
+		Gold:   0,
+		Inventory: Inventory{
+			sword,
+			chainVest,
+			lifeFountain,
+			healthPot,
+		},
+	}
+}
+
+// NewEnemyTrainer returns a player that is initialized to be faced in training by the user.
+func NewEnemyTrainer() Player {
+	return Player{
+		Name:   "Enemy",
+		Damage: 10,
+		Health: 100,
+		Armor:  20,
+		Gold:   0,
+		Inventory: Inventory{
+			DamageItem,
+			ArmorItem,
+			HealthItem,
+			AuxiliaryItem,
+		},
+	}
+}
+
 // UpdateStats updates the players current stats based on his inventory.
 func (player *Player) UpdateStats() {
 	for i := 0; i < len(player.Inventory)-1; i++ {
@@ -139,4 +178,14 @@ func (player *Player) ConsumeAuxiliaryItem() error {
 	player.Health += player.Inventory[3].HealthIncrease
 
 	return nil
+}
+
+// Attack damages the opponent.
+func (player *Player) Attack() {
+
+}
+
+// Defend increases the health of the player by his armor.
+func (player *Player) Defend() {
+	player.Health += player.Armor
 }

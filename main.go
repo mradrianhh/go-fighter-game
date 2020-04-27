@@ -6,11 +6,7 @@
 // causing the options-menu to reappear for the next player whose turn it is.
 package main
 
-import (
-	"github.com/mradrianhh/go-fighter-game/game"
-)
-
 func main() {
-	game.ShowMainMenu()
-	game.Loop()
+	//game.ShowMainMenu()
+	//game.Loop()
 }

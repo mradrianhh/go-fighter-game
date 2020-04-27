@@ -12,6 +12,9 @@ var shop models.Shop
 // Player is the user playing the game.
 var Player models.Player
 
+var playersTurn bool = true
+var turn int = 1
+
 func init() {
 	shop = models.NewShop()
 
