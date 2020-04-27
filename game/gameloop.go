@@ -17,7 +17,7 @@ func Loop() {
 		if _, err := fmt.Scan(&response); err == nil {
 			switch response {
 			case 1:
-				ShowStats()
+				ShowStats(&Player)
 			case 2:
 				ShowShop()
 			case 0:

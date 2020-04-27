@@ -58,8 +58,10 @@ func ShowShopItems(shop *models.Shop, player *models.Player) {
 						if shop.Inventory[0] == models.DamageItem {
 							fmt.Println("This item can't be bought. It's just a placeholder.")
 						} else {
-							player.Inventory[0] = shop.Inventory[0]
-							shop.Inventory[0] = models.DamageItem
+							err := shop.BuyDamageItem(player)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
 						}
 					case "N", "n":
 						continue
@@ -74,8 +76,10 @@ func ShowShopItems(shop *models.Shop, player *models.Player) {
 						if shop.Inventory[1] == models.ArmorItem {
 							fmt.Println("This item can't be bought. It's just a placeholder.")
 						} else {
-							player.Inventory[1] = shop.Inventory[1]
-							shop.Inventory[1] = models.ArmorItem
+							err := shop.BuyArmorItem(player)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
 						}
 					case "N", "n":
 						continue
@@ -90,8 +94,10 @@ func ShowShopItems(shop *models.Shop, player *models.Player) {
 						if shop.Inventory[2] == models.HealthItem {
 							fmt.Println("This item can't be bought. It's just a placeholder.")
 						} else {
-							player.Inventory[2] = shop.Inventory[2]
-							shop.Inventory[2] = models.HealthItem
+							err := shop.BuyHealthItem(player)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
 						}
 					case "N", "n":
 						continue
@@ -106,8 +112,10 @@ func ShowShopItems(shop *models.Shop, player *models.Player) {
 						if shop.Inventory[3] == models.AuxiliaryItem {
 							fmt.Println("This item can't be bought. It's just a placeholder.")
 						} else {
-							player.Inventory[3] = shop.Inventory[3]
-							shop.Inventory[3] = models.AuxiliaryItem
+							err := shop.BuyAuxiliaryItem(player)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
 						}
 					case "N", "n":
 						continue
@@ -147,7 +155,7 @@ func ShowOwnItems(p *models.Player) {
 						if p.Inventory[0] == models.DamageItem {
 							fmt.Println("This item can't be sold. It's just a placeholder.")
 						} else {
-							p.Inventory[0] = models.DamageItem
+							p.SellDamageItem()
 						}
 					case "N", "n":
 						continue
@@ -162,7 +170,7 @@ func ShowOwnItems(p *models.Player) {
 						if p.Inventory[1] == models.ArmorItem {
 							fmt.Println("This item can't be sold. It's just a placeholder.")
 						} else {
-							p.Inventory[1] = models.ArmorItem
+							p.SellArmorItem()
 						}
 					case "N", "n":
 						continue
@@ -177,7 +185,7 @@ func ShowOwnItems(p *models.Player) {
 						if p.Inventory[2] == models.HealthItem {
 							fmt.Println("This item can't be sold. It's just a placeholder.")
 						} else {
-							p.Inventory[2] = models.HealthItem
+							p.SellHealthItem()
 						}
 					case "N", "n":
 						continue
@@ -192,7 +200,7 @@ func ShowOwnItems(p *models.Player) {
 						if p.Inventory[3] == models.AuxiliaryItem {
 							fmt.Println("This item can't be sold. It's just a placeholder.")
 						} else {
-							p.Inventory[3] = models.AuxiliaryItem
+							p.SellAuxiliaryItem()
 						}
 					case "N", "n":
 						continue
