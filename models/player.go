@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/mradrianhh/go-fighter-game/events"
 )
 
 // ResetType is the type that can be tested against in the "Reset()"-method.
@@ -21,11 +23,13 @@ const (
 // The player object will have a damage stat, health stat
 // and a gold stat. Future changes may incurr.
 type Player struct {
-	Name      string
-	Number    int
-	Stats     Stats
-	Gold      int
-	Inventory Inventory
+	Name                string
+	Number              int
+	Stats               Stats
+	Gold                int
+	Inventory           Inventory
+	baseStats           Stats
+	auxiliaryItemEffect Stats
 }
 
 // PlayerList is the list of all players in the game.
@@ -37,27 +41,29 @@ func init() {
 
 // NewPlayer creates and initializes a new player with the correct default values and given name.
 func NewPlayer(name string, number int) Player {
-	return Player{
-		Name:   name,
-		Number: number,
-		Stats:  NewBaseStats(),
-		Gold:   0,
+	player := Player{
+		Name:      name,
+		Number:    number,
+		baseStats: NewBaseStats(),
+		Gold:      0,
 		Inventory: Inventory{
-			DamageItem,
-			ArmorItem,
-			HealthItem,
-			AuxiliaryItem,
+			DamageItems["sword"],
+			ArmorItems["chainvest"],
+			HealthItems["lifefountain"],
+			AuxiliaryItems["healthpot"],
 		},
 	}
+	player.UpdateStats()
+	return player
 }
 
 // NewPlayerTrainer returns a player that is initialized to be used in training by the user.
 func NewPlayerTrainer() Player {
 	return Player{
-		Name:   "Player",
-		Number: 1,
-		Stats:  NewBaseStats(),
-		Gold:   0,
+		Name:      "Player",
+		Number:    1,
+		baseStats: NewBaseStats(),
+		Gold:      0,
 		Inventory: Inventory{
 			DamageItems["sword"],
 			ArmorItems["chainvest"],
@@ -70,10 +76,10 @@ func NewPlayerTrainer() Player {
 // NewEnemyTrainer returns a player that is initialized to be faced in training by the user.
 func NewEnemyTrainer() Player {
 	return Player{
-		Name:   "Enemy",
-		Number: 2,
-		Stats:  NewBaseStats(),
-		Gold:   0,
+		Name:      "Enemy",
+		Number:    2,
+		baseStats: NewBaseStats(),
+		Gold:      0,
 		Inventory: Inventory{
 			DamageItem,
 			ArmorItem,
@@ -88,10 +94,10 @@ func (player *Player) Reset(resetType ResetType) error {
 	switch resetType {
 	case ToTrainingPlayer:
 		player = &Player{
-			Name:   player.Name,
-			Number: player.Number,
-			Stats:  NewBaseStats(),
-			Gold:   0,
+			Name:      player.Name,
+			Number:    player.Number,
+			baseStats: NewBaseStats(),
+			Gold:      0,
 			Inventory: Inventory{
 				DamageItems["sword"],
 				ArmorItems["chainvest"],
@@ -99,13 +105,14 @@ func (player *Player) Reset(resetType ResetType) error {
 				AuxiliaryItems["healthpot"],
 			},
 		}
+		player.UpdateStats()
 		return nil
 	case ToTrainingOpponent:
 		player = &Player{
-			Name:   player.Name,
-			Number: player.Number,
-			Stats:  NewBaseStats(),
-			Gold:   0,
+			Name:      player.Name,
+			Number:    player.Number,
+			baseStats: NewBaseStats(),
+			Gold:      0,
 			Inventory: Inventory{
 				DamageItem,
 				ArmorItem,
@@ -113,13 +120,14 @@ func (player *Player) Reset(resetType ResetType) error {
 				AuxiliaryItem,
 			},
 		}
+		player.UpdateStats()
 		return nil
 	case ToDefault:
 		player = &Player{
-			Name:   player.Name,
-			Number: player.Number,
-			Stats:  NewBaseStats(),
-			Gold:   0,
+			Name:      player.Name,
+			Number:    player.Number,
+			baseStats: NewBaseStats(),
+			Gold:      0,
 			Inventory: Inventory{
 				DamageItem,
 				ArmorItem,
@@ -127,6 +135,7 @@ func (player *Player) Reset(resetType ResetType) error {
 				AuxiliaryItem,
 			},
 		}
+		player.UpdateStats()
 		return nil
 	default:
 		return errors.New("not a ResetType")
@@ -135,10 +144,10 @@ func (player *Player) Reset(resetType ResetType) error {
 
 // UpdateStats updates the players current stats based on his inventory.
 func (player *Player) UpdateStats() {
-	for i := 0; i < len(player.Inventory)-1; i++ {
-		player.Stats.Damage += player.Inventory[i].DamageIncrease
-		player.Stats.Armor += player.Inventory[i].ArmorIncrease
-		player.Stats.Health += player.Inventory[i].HealthIncrease
+	for i := 0; i < len(player.Inventory)-1; i++ { // Subtract one from limit to not include the auxiliary(consumable) item.
+		player.Stats.Damage = player.baseStats.Damage + player.Inventory[i].DamageIncrease + player.auxiliaryItemEffect.Damage
+		player.Stats.Armor = player.baseStats.Armor + player.Inventory[i].ArmorIncrease + player.auxiliaryItemEffect.Armor
+		player.Stats.Health = player.baseStats.Health + player.Inventory[i].HealthIncrease + player.auxiliaryItemEffect.Health
 	}
 }
 
@@ -160,6 +169,7 @@ func (player *Player) BuyDamageItem(item Item) error {
 		return err
 	}
 	player.Inventory[0] = item
+	player.UpdateStats()
 
 	return nil
 }
@@ -172,6 +182,7 @@ func (player *Player) BuyArmorItem(item Item) error {
 		return err
 	}
 	player.Inventory[1] = item
+	player.UpdateStats()
 
 	return nil
 }
@@ -184,6 +195,7 @@ func (player *Player) BuyHealthItem(item Item) error {
 		return err
 	}
 	player.Inventory[2] = item
+	player.UpdateStats()
 
 	return nil
 }
@@ -196,6 +208,7 @@ func (player *Player) BuyAuxiliaryItem(item Item) error {
 		return err
 	}
 	player.Inventory[3] = item
+	player.UpdateStats()
 
 	return nil
 }
@@ -205,6 +218,7 @@ func (player *Player) BuyAuxiliaryItem(item Item) error {
 func (player *Player) SellDamageItem() {
 	player.WireMoney(player.Inventory[0].Cost)
 	player.Inventory[0] = DamageItem
+	player.UpdateStats()
 }
 
 // SellArmorItem removes the current armor item in the inventory,
@@ -212,6 +226,7 @@ func (player *Player) SellDamageItem() {
 func (player *Player) SellArmorItem() {
 	player.WireMoney(player.Inventory[1].Cost)
 	player.Inventory[1] = ArmorItem
+	player.UpdateStats()
 }
 
 // SellHealthItem removes the current health item in the inventory,
@@ -219,6 +234,7 @@ func (player *Player) SellArmorItem() {
 func (player *Player) SellHealthItem() {
 	player.WireMoney(player.Inventory[2].Cost)
 	player.Inventory[2] = HealthItem
+	player.UpdateStats()
 }
 
 // SellAuxiliaryItem removes the current auxiliary item in the inventory,
@@ -226,6 +242,7 @@ func (player *Player) SellHealthItem() {
 func (player *Player) SellAuxiliaryItem() {
 	player.WireMoney(player.Inventory[3].Cost)
 	player.Inventory[3] = AuxiliaryItem
+	player.UpdateStats()
 }
 
 // ConsumeAuxiliaryItem adds the auxiliary item's stats to the player, then removes it.
@@ -235,11 +252,14 @@ func (player *Player) ConsumeAuxiliaryItem() error {
 	if player.Inventory[3] == AuxiliaryItem {
 		return errors.New("can't consume placeholder item")
 	}
-
 	player.Stats.Damage += player.Inventory[3].DamageIncrease
 	player.Stats.Armor += player.Inventory[3].ArmorIncrease
 	player.Stats.Health += player.Inventory[3].HealthIncrease
-
+	player.auxiliaryItemEffect = Stats{
+		Damage: player.Inventory[3].DamageIncrease,
+		Armor:  player.Inventory[3].ArmorIncrease,
+		Health: player.Inventory[3].HealthIncrease,
+	}
 	return nil
 }
 
@@ -255,4 +275,28 @@ func (player *Player) Defend() {
 	fmt.Print("\nDefending...\n")
 	time.Sleep(1 * time.Second)
 	player.Stats.Health += player.Stats.Armor
+}
+
+// RemoveAuxiliaryItemEffect removes the auxiliary item effect from the player after one turn. Will not remove health regen effects, only armor and damage increases.
+func (player *Player) RemoveAuxiliaryItemEffect() {
+	fmt.Printf("Removing auxiliary effect on player %v, %s\n", player.Number, player.Name)
+	player.auxiliaryItemEffect = Stats{}
+	player.UpdateStats()
+}
+
+func (player *Player) handleChangeTurn() {
+	player.RemoveAuxiliaryItemEffect()
+}
+
+// Listen will listen for events and act accordingly.
+func Listen() {
+	for {
+		if event, ok := <-events.EventStream; ok {
+			if event == "NextTurn" {
+				for _, p := range PlayerList {
+					p.handleChangeTurn()
+				}
+			}
+		}
+	}
 }

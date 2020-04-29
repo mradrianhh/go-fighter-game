@@ -14,7 +14,6 @@ func Start() {
 // ShowHome presents the user with the home menu.
 func showHome() {
 	for {
-		currentPlayer.UpdateStats()
 		fmt.Print(separator)
 		fmt.Printf("\n\tPlayer %d\n", currentPlayer.Number)
 		fmt.Print(separator)

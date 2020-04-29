@@ -12,6 +12,7 @@ import (
 
 	"github.com/mradrianhh/go-fighter-game/commentary"
 	"github.com/mradrianhh/go-fighter-game/game"
+	"github.com/mradrianhh/go-fighter-game/models"
 	"github.com/mradrianhh/go-fighter-game/training"
 )
 
@@ -21,6 +22,7 @@ var charResponse = ""
 const separator = "\n***\n"
 
 func main() {
+	go models.Listen()
 	showMainMenu()
 }
 

@@ -3,13 +3,13 @@ package models
 // Stats is a holder for the stats damage, health and armor.
 type Stats struct {
 	Damage int
-	Health int
 	Armor  int
+	Health int
 }
 
 // BaseStats is the default and standard stats a player-object should be initialized with.
-var BaseStats = Stats{
-	Damage: 10,
+var baseStats = Stats{
+	Damage: 0,
 	Armor:  0,
 	Health: 100,
 }
@@ -25,5 +25,5 @@ func NewStats(damage, armor, health int) Stats {
 
 // NewBaseStats returns a new stats-object with the "BaseStats"(10, 0, 100).
 func NewBaseStats() Stats {
-	return BaseStats
+	return baseStats
 }

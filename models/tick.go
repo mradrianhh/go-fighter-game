@@ -30,3 +30,8 @@ func NewTick(tasks []func()) Tick {
 func (tick *Tick) QueueExtraTasks(tasks ...func()) {
 	tick.extraTasks = append(tasks, tasks...)
 }
+
+// GetValue returns the current value of the tick.
+func (tick *Tick) GetValue() int {
+	return tick.value
+}

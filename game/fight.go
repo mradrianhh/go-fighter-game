@@ -8,6 +8,7 @@ import (
 
 // ShowFightMenu presents the user with the options he can take in combat.
 func ShowFightMenu() {
+start:
 	for {
 		fmt.Print(separator)
 		fmt.Printf("\n\tPlayer %d\n", currentPlayer.Number)
@@ -18,13 +19,15 @@ func ShowFightMenu() {
 			switch response {
 			case 1:
 				currentPlayer.Attack(&opposingPlayer)
+				Tick.Tick()
 				goto end
 			case 2:
 				currentPlayer.Defend()
+				Tick.Tick()
 				goto end
 			case 3:
 				currentPlayer.ConsumeAuxiliaryItem()
-				goto end
+				goto start
 			case 4:
 				goto end
 			default:
@@ -33,5 +36,4 @@ func ShowFightMenu() {
 		}
 	}
 end:
-	tick.Tick()
 }
