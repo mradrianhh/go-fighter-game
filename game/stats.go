@@ -16,9 +16,9 @@ func ShowStats(player *models.Player) {
 		fmt.Print(separator)
 		fmt.Print("\nStats\n")
 		fmt.Printf("\n\tGold: %d\n", player.Gold)
-		fmt.Printf("\tDamage: %d\n", player.Damage)
-		fmt.Printf("\tArmor: %d\n", player.Armor)
-		fmt.Printf("\tHealth: %d\n", player.Health)
+		fmt.Printf("\tDamage: %d\n", player.Stats.Damage)
+		fmt.Printf("\tArmor: %d\n", player.Stats.Armor)
+		fmt.Printf("\tHealth: %d\n", player.Stats.Health)
 		fmt.Printf("\n\tInventory: \n")
 		fmt.Printf("\t1 - %s(+%d Damage) | 2 - %s(+%d Armor) | 3 - %s(+%d Health) | 4 - %s(%s)\n", player.Inventory[0].Name, player.Inventory[0].DamageIncrease,
 			player.Inventory[1].Name, player.Inventory[1].ArmorIncrease, player.Inventory[2].Name, player.Inventory[2].HealthIncrease,

@@ -8,7 +8,7 @@ import (
 
 func showPlayerInfo(player models.Player) {
 	fmt.Printf("\n\tGold: %d\n", player.Gold)
-	fmt.Printf("\tDamage: %d\n", player.Damage)
-	fmt.Printf("\tArmor: %d\n", player.Armor)
-	fmt.Printf("\tHealth: %d\n", player.Health)
+	fmt.Printf("\tDamage: %d\n", player.Stats.Damage)
+	fmt.Printf("\tArmor: %d\n", player.Stats.Armor)
+	fmt.Printf("\tHealth: %d\n", player.Stats.Health)
 }

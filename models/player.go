@@ -16,12 +16,6 @@ const (
 	ToDefault          = ResetType("ToDefault")
 )
 
-type stats struct {
-	Damage int
-	Health int
-	Armor  int
-}
-
 // Player will be controlled by the user.
 //
 // The player object will have a damage stat, health stat
@@ -29,7 +23,7 @@ type stats struct {
 type Player struct {
 	Name      string
 	Number    int
-	Stats     stats
+	Stats     Stats
 	Gold      int
 	Inventory Inventory
 }
@@ -46,12 +40,8 @@ func NewPlayer(name string, number int) Player {
 	return Player{
 		Name:   name,
 		Number: number,
-		Stats: stats{
-			Damage: 10,
-			Armor:  20,
-			Health: 100,
-		},
-		Gold: 0,
+		Stats:  NewBaseStats(),
+		Gold:   0,
 		Inventory: Inventory{
 			DamageItem,
 			ArmorItem,
@@ -65,9 +55,8 @@ func NewPlayer(name string, number int) Player {
 func NewPlayerTrainer() Player {
 	return Player{
 		Name:   "Player",
-		Damage: 10,
-		Health: 100,
-		Armor:  20,
+		Number: 1,
+		Stats:  NewBaseStats(),
 		Gold:   0,
 		Inventory: Inventory{
 			DamageItems["sword"],
@@ -82,9 +71,8 @@ func NewPlayerTrainer() Player {
 func NewEnemyTrainer() Player {
 	return Player{
 		Name:   "Enemy",
-		Damage: 10,
-		Health: 100,
-		Armor:  20,
+		Number: 2,
+		Stats:  NewBaseStats(),
 		Gold:   0,
 		Inventory: Inventory{
 			DamageItem,
@@ -101,9 +89,8 @@ func (player *Player) Reset(resetType ResetType) error {
 	case ToTrainingPlayer:
 		player = &Player{
 			Name:   player.Name,
-			Damage: 10,
-			Health: 100,
-			Armor:  20,
+			Number: player.Number,
+			Stats:  NewBaseStats(),
 			Gold:   0,
 			Inventory: Inventory{
 				DamageItems["sword"],
@@ -116,9 +103,8 @@ func (player *Player) Reset(resetType ResetType) error {
 	case ToTrainingOpponent:
 		player = &Player{
 			Name:   player.Name,
-			Damage: 10,
-			Health: 100,
-			Armor:  20,
+			Number: player.Number,
+			Stats:  NewBaseStats(),
 			Gold:   0,
 			Inventory: Inventory{
 				DamageItem,
@@ -131,9 +117,8 @@ func (player *Player) Reset(resetType ResetType) error {
 	case ToDefault:
 		player = &Player{
 			Name:   player.Name,
-			Damage: 10,
-			Health: 100,
-			Armor:  20,
+			Number: player.Number,
+			Stats:  NewBaseStats(),
 			Gold:   0,
 			Inventory: Inventory{
 				DamageItem,
@@ -262,12 +247,12 @@ func (player *Player) ConsumeAuxiliaryItem() error {
 func (player *Player) Attack(target *Player) {
 	fmt.Print("\nAttacking...\n")
 	time.Sleep(1 * time.Second)
-	target.Health -= player.Damage
+	target.Stats.Health -= player.Stats.Damage
 }
 
 // Defend increases the health of the player by his armor.
 func (player *Player) Defend() {
 	fmt.Print("\nDefending...\n")
 	time.Sleep(1 * time.Second)
-	player.Health += player.Armor
+	player.Stats.Health += player.Stats.Armor
 }
