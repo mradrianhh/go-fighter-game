@@ -32,8 +32,10 @@ var AuxiliaryItems Items = make(Items)
 func init() {
 	DamageItems["sword"] = Item{Name: "Sword", Cost: 10, DamageIncrease: 10, HealthIncrease: 0, ArmorIncrease: 0}
 	ArmorItems["chainvest"] = Item{Name: "Chainvest", Cost: 10, DamageIncrease: 0, HealthIncrease: 0, ArmorIncrease: 10}
-	HealthItems["lifefountain"] = Item{Name: "Life Fountain", Cost: 10, DamageIncrease: 0, HealthIncrease: 10, ArmorIncrease: 10}
+	HealthItems["lifefountain"] = Item{Name: "Life Fountain", Cost: 10, DamageIncrease: 0, HealthIncrease: 10, ArmorIncrease: 0}
 	AuxiliaryItems["healthpot"] = Item{Name: "Health Pot", Cost: 1, DamageIncrease: 0, HealthIncrease: 20, ArmorIncrease: 0, Description: "+20 Health"}
+	AuxiliaryItems["wrath"] = Item{Name: "Wrath", Cost: 1, DamageIncrease: 20, HealthIncrease: 0, ArmorIncrease: 0, Description: "+20 Damage"}
+	AuxiliaryItems["morphine"] = Item{Name: "Morphine", Cost: 1, DamageIncrease: 0, HealthIncrease: 0, ArmorIncrease: 20, Description: "+20 Armor"}
 }
 
 // DamageItem is a placeholder for an actual damage item.
