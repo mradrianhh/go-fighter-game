@@ -1,0 +1,10 @@
+{
+	"lifefountain": {
+		"Name": "Life Fountain",
+		"Cost": 10,
+		"DamageIncrease": 0,
+		"HealthIncrease": 10,
+		"ArmorIncrease": 0,
+		"Description": ""
+	}
+}

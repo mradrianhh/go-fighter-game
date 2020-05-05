@@ -1,0 +1,134 @@
+[
+	{
+		"Name": "Adrian",
+		"Number": 1,
+		"Stats": {
+			"Damage": 0,
+			"Armor": 0,
+			"Health": 100
+		},
+		"Gold": 0,
+		"Inventory": [
+			{
+				"Name": "Damage Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Armor Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Health Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Auxiliary Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			}
+		]
+	},
+	{
+		"Name": "Jack",
+		"Number": 2,
+		"Stats": {
+			"Damage": 0,
+			"Armor": 0,
+			"Health": 100
+		},
+		"Gold": 0,
+		"Inventory": [
+			{
+				"Name": "Damage Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Armor Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Health Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Auxiliary Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			}
+		]
+	},
+	{
+		"Name": "Adele",
+		"Number": 3,
+		"Stats": {
+			"Damage": 0,
+			"Armor": 0,
+			"Health": 100
+		},
+		"Gold": 0,
+		"Inventory": [
+			{
+				"Name": "Damage Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Armor Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Health Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			},
+			{
+				"Name": "Auxiliary Item",
+				"Cost": 0,
+				"DamageIncrease": 0,
+				"HealthIncrease": 0,
+				"ArmorIncrease": 0,
+				"Description": ""
+			}
+		]
+	}
+]

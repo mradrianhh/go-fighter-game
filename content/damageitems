@@ -1,0 +1,10 @@
+{
+	"sword": {
+		"Name": "Sword",
+		"Cost": 10,
+		"DamageIncrease": 10,
+		"HealthIncrease": 0,
+		"ArmorIncrease": 0,
+		"Description": ""
+	}
+}

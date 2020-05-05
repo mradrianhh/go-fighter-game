@@ -17,6 +17,9 @@ var Tick models.Tick
 // CurrentPlayer is the player whose turn it currently is.
 var currentPlayer models.Player
 
+// Winner is the final player that won the game.
+var Winner models.Player
+
 // opposingPlayer is the player opposing the player whose turn it is.
 var opposingPlayer models.Player
 
@@ -25,4 +28,5 @@ func init() {
 	currentPlayer = models.PlayerList[0]
 	opposingPlayer = models.PlayerList[1]
 	Tick = models.NewTick([]func(){changeTurns})
+	Winner = models.NewPlayer("Adrian", 1)
 }

@@ -1,0 +1,10 @@
+{
+	"chainvest": {
+		"Name": "Chainvest",
+		"Cost": 10,
+		"DamageIncrease": 0,
+		"HealthIncrease": 0,
+		"ArmorIncrease": 10,
+		"Description": ""
+	}
+}

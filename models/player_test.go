@@ -2,7 +2,7 @@ package models
 
 import "testing"
 
-func TestNewPlayer(t *testing.T) {
+func TestPlayer_NewPlayer(t *testing.T) {
 	got := NewPlayer("Adrian", 1)
 	expected := Player{
 		Name:   "Adrian",
@@ -96,7 +96,7 @@ func TestNewPlayer(t *testing.T) {
 	}
 }
 
-func TestNewPlayerTrainer(t *testing.T) {
+func TestPlayer_NewPlayerTrainer(t *testing.T) {
 	got := NewPlayerTrainer()
 	expected := Player{
 		Name:   "Player",
@@ -190,7 +190,7 @@ func TestNewPlayerTrainer(t *testing.T) {
 	}
 }
 
-func TestNewEnemyTrainer(t *testing.T) {
+func TestPlayer_NewEnemyTrainer(t *testing.T) {
 	got := NewEnemyTrainer()
 	expected := Player{
 		Name:   "Enemy",
@@ -284,7 +284,7 @@ func TestNewEnemyTrainer(t *testing.T) {
 	}
 }
 
-func TestResetToDefault(t *testing.T) {
+func TestPlayer_ResetToDefault(t *testing.T) {
 	got := NewPlayer("Adrian", 1)
 	got.Reset("ToDefault")
 	expected := Player{
@@ -379,7 +379,7 @@ func TestResetToDefault(t *testing.T) {
 	}
 }
 
-func TestResetToTrainingOpponent(t *testing.T) {
+func TestPlayer_ResetToTrainingOpponent(t *testing.T) {
 	got := NewPlayer("Adrian", 1)
 	got.Reset("ToTrainingOpponent")
 	expected := Player{
@@ -474,7 +474,7 @@ func TestResetToTrainingOpponent(t *testing.T) {
 	}
 }
 
-func TestResetToTrainingPlayer(t *testing.T) {
+func TestPlayer_ResetToTrainingPlayer(t *testing.T) {
 	got := NewPlayer("Adrian", 1)
 	got.Reset("ToTrainingPlayer")
 	expected := Player{
@@ -569,7 +569,15 @@ func TestResetToTrainingPlayer(t *testing.T) {
 	}
 }
 
-func TestUpdateStats(t *testing.T) {
+func TestPlayer_ResetDefault(t *testing.T) {
+	got := NewPlayer("Adrian", 1)
+	err := got.Reset("not a ResetType")
+	if err.Error() != "not a ResetType" {
+		t.Errorf("Did not get the expected result. Got: %s, expected: %s.", err.Error(), "not a ResetType")
+	}
+}
+
+func TestPlayer_UpdateStats(t *testing.T) {
 	got := NewPlayer("Adrian", 1)
 	got.Inventory[0] = DamageItems["sword"]
 	got.UpdateStats()
@@ -665,7 +673,7 @@ func TestUpdateStats(t *testing.T) {
 	}
 }
 
-func TestWireMoney_NotEnough(t *testing.T) {
+func TestPlayer_WireMoney_NotEnough(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	got := player.WireMoney(10)
 	expected := "not enough money"
@@ -674,7 +682,7 @@ func TestWireMoney_NotEnough(t *testing.T) {
 	}
 }
 
-func TestWireMoney_GiveAway(t *testing.T) {
+func TestPlayer_WireMoney_GiveAway(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Gold = 10
 	player.WireMoney(10)
@@ -683,7 +691,7 @@ func TestWireMoney_GiveAway(t *testing.T) {
 	}
 }
 
-func TestWireMoney_Receive(t *testing.T) {
+func TestPlayer_WireMoney_Receive(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.WireMoney(-10)
 	if player.Gold != 10 {
@@ -691,7 +699,7 @@ func TestWireMoney_Receive(t *testing.T) {
 	}
 }
 
-func TestBuyDamageItem_NotEnough(t *testing.T) {
+func TestPlayer_BuyDamageItem_NotEnough(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	got := player.BuyDamageItem(DamageItems["sword"])
 	expected := "not enough money"
@@ -700,7 +708,7 @@ func TestBuyDamageItem_NotEnough(t *testing.T) {
 	}
 }
 
-func TestBuyDamageItem(t *testing.T) {
+func TestPlayer_BuyDamageItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Gold = 10
 	player.BuyDamageItem(DamageItems["sword"])
@@ -714,7 +722,7 @@ func TestBuyDamageItem(t *testing.T) {
 	}
 }
 
-func TestBuyArmorItem_NotEnough(t *testing.T) {
+func TestPlayer_BuyArmorItem_NotEnough(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	got := player.BuyArmorItem(ArmorItems["chainvest"])
 	expected := "not enough money"
@@ -723,7 +731,7 @@ func TestBuyArmorItem_NotEnough(t *testing.T) {
 	}
 }
 
-func TestBuyArmorItem(t *testing.T) {
+func TestPlayer_BuyArmorItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Gold = 10
 	player.BuyArmorItem(ArmorItems["chainvest"])
@@ -737,7 +745,7 @@ func TestBuyArmorItem(t *testing.T) {
 	}
 }
 
-func TestBuyHealthItem_NotEnough(t *testing.T) {
+func TestPlayer_BuyHealthItem_NotEnough(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	got := player.BuyHealthItem(HealthItems["lifefountain"])
 	expected := "not enough money"
@@ -746,7 +754,7 @@ func TestBuyHealthItem_NotEnough(t *testing.T) {
 	}
 }
 
-func TestBuyHealthItem(t *testing.T) {
+func TestPlayer_BuyHealthItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Gold = 10
 	player.BuyHealthItem(HealthItems["lifefountain"])
@@ -760,7 +768,7 @@ func TestBuyHealthItem(t *testing.T) {
 	}
 }
 
-func TestBuyAuxiliaryItem_NotEnough(t *testing.T) {
+func TestPlayer_BuyAuxiliaryItem_NotEnough(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	got := player.BuyHealthItem(AuxiliaryItems["healthpot"])
 	expected := "not enough money"
@@ -769,7 +777,7 @@ func TestBuyAuxiliaryItem_NotEnough(t *testing.T) {
 	}
 }
 
-func TestBuyAuxiliaryItem(t *testing.T) {
+func TestPlayer_BuyAuxiliaryItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Gold = 10
 	player.BuyAuxiliaryItem(AuxiliaryItems["healthpot"])
@@ -783,7 +791,7 @@ func TestBuyAuxiliaryItem(t *testing.T) {
 	}
 }
 
-func TestSellDamageItem(t *testing.T) {
+func TestPlayer_SellDamageItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[0] = DamageItems["sword"]
 	player.SellDamageItem()
@@ -797,7 +805,7 @@ func TestSellDamageItem(t *testing.T) {
 	}
 }
 
-func TestSellArmorItem(t *testing.T) {
+func TestPlayer_SellArmorItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[1] = ArmorItems["chainvest"]
 	player.SellArmorItem()
@@ -811,7 +819,7 @@ func TestSellArmorItem(t *testing.T) {
 	}
 }
 
-func TestSellHealthItem(t *testing.T) {
+func TestPlayer_SellHealthItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[2] = HealthItems["lifefountain"]
 	player.SellHealthItem()
@@ -825,7 +833,7 @@ func TestSellHealthItem(t *testing.T) {
 	}
 }
 
-func TestSellAuxiliaryItem(t *testing.T) {
+func TestPlayer_SellAuxiliaryItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[3] = AuxiliaryItems["healthpot"]
 	player.SellAuxiliaryItem()
@@ -839,7 +847,7 @@ func TestSellAuxiliaryItem(t *testing.T) {
 	}
 }
 
-func TestConsumeAuxiliaryItem_ConsumePlaceholderItem(t *testing.T) {
+func TestPlayer_ConsumeAuxiliaryItem_ConsumePlaceholderItem(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	got := player.ConsumeAuxiliaryItem()
 	expected := "can't consume placeholder item"
@@ -848,7 +856,7 @@ func TestConsumeAuxiliaryItem_ConsumePlaceholderItem(t *testing.T) {
 	}
 }
 
-func TestConsumeAuxiliaryItem_Damage(t *testing.T) {
+func TestPlayer_ConsumeAuxiliaryItem_Damage(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[3] = AuxiliaryItems["wrath"]
 	player.ConsumeAuxiliaryItem()
@@ -858,7 +866,7 @@ func TestConsumeAuxiliaryItem_Damage(t *testing.T) {
 	}
 }
 
-func TestConsumeAuxiliaryItem_Armor(t *testing.T) {
+func TestPlayer_ConsumeAuxiliaryItem_Armor(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[3] = AuxiliaryItems["morphine"]
 	player.ConsumeAuxiliaryItem()
@@ -868,7 +876,7 @@ func TestConsumeAuxiliaryItem_Armor(t *testing.T) {
 	}
 }
 
-func TestRemoveAuxiliaryItemEffect(t *testing.T) {
+func TestPlayer_RemoveAuxiliaryItemEffect(t *testing.T) {
 	player := NewPlayer("Adrian", 1)
 	player.Inventory[3] = AuxiliaryItems["morphine"]
 	player.ConsumeAuxiliaryItem()

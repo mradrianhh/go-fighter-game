@@ -1,64 +1,37 @@
 package events
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type dog struct {
-	name    string
-	sitters map[string][]chan string
+// GlobalEventListener ...
+var GlobalEventListener EventListener = EventListener{}
+
+func init() {
+	GlobalEventListener.Events = make(map[string]func())
+	GlobalEventListener.Events["Event 1"] = func() { fmt.Println("Event 1 pressed.") }
+	GlobalEventListener.Events["Event 2"] = func() { fmt.Println("Event 2 pressed.") }
+	GlobalEventListener.Events["Event 3"] = func() { fmt.Println("Event 3 pressed.") }
+	go GlobalEventListener.Listen(GlobalEventStream)
 }
 
-func (d *dog) addSitter(event string, channel chan string) {
-	if d.sitters == nil {
-		d.sitters = make(map[string][]chan string)
-	}
-
-	if _, ok := d.sitters[event]; ok {
-		d.sitters[event] = append(d.sitters[event], channel)
-	} else {
-		d.sitters[event] = []chan string{channel}
-	}
+// Listener ...
+type Listener interface {
+	Listen()
 }
 
-func (d *dog) RemoveSitter(event string, channel chan string) {
-	if _, ok := d.sitters[event]; ok {
-		for i := range d.sitters[event] {
-			if d.sitters[event][i] == channel {
-				d.sitters[event] = append(d.sitters[event][:i], d.sitters[event][i+1:]...)
-				break
+// EventListener listens for events.
+type EventListener struct {
+	Events map[string]func()
+}
+
+// Listen ...
+func (eventListener *EventListener) Listen(eventStream <-chan string) {
+	for {
+		if event, ok := <-eventStream; ok {
+			for e, f := range eventListener.Events {
+				if event == e {
+					f()
+				}
 			}
 		}
 	}
-}
-
-func (d *dog) emit(event string, response string) {
-	if _, ok := d.sitters[event]; ok {
-		for _, handler := range d.sitters[event] {
-			go func(handler chan string) {
-				handler <- response
-			}(handler)
-		}
-	}
-}
-
-// Start ...
-func Start() {
-	balto := dog{"balto", nil}
-
-	adrian := make(chan string)
-
-	balto.addSitter("bark", adrian)
-
-	go func() {
-		for {
-			msg := <-adrian
-			fmt.Println("Adrian: " + msg)
-		}
-	}()
-
-	fmt.Println("Balto barked!")
-	balto.emit("bark", "Dont bark!")
-
-	fmt.Scanln()
 }

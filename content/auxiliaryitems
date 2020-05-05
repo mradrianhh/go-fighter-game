@@ -1,0 +1,26 @@
+{
+	"healthpot": {
+		"Name": "Health Pot",
+		"Cost": 1,
+		"DamageIncrease": 0,
+		"HealthIncrease": 20,
+		"ArmorIncrease": 0,
+		"Description": "+20 Health"
+	},
+	"morphine": {
+		"Name": "Morphine",
+		"Cost": 1,
+		"DamageIncrease": 0,
+		"HealthIncrease": 0,
+		"ArmorIncrease": 20,
+		"Description": "+20 Armor"
+	},
+	"wrath": {
+		"Name": "Wrath",
+		"Cost": 1,
+		"DamageIncrease": 20,
+		"HealthIncrease": 0,
+		"ArmorIncrease": 0,
+		"Description": "+20 Damage"
+	}
+}

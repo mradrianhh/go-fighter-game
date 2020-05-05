@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/mradrianhh/go-fighter-game/events"
+	"github.com/mradrianhh/go-fighter-game/persist"
 )
 
 // ResetType is the type that can be tested against in the "Reset()"-method.
@@ -17,6 +18,16 @@ const (
 	ToTrainingPlayer   = ResetType("ToTrainingPlayer")
 	ToDefault          = ResetType("ToDefault")
 )
+
+type players []Player
+
+// PlayerList is the list of all players in the game.
+var PlayerList players
+
+func init() {
+	PlayerList = append(PlayerList, NewPlayer("Adrian", 1), NewPlayer("Jack", 2))
+	persist.Save("players", PlayerList)
+}
 
 // Player will be controlled by the user.
 //
@@ -30,13 +41,6 @@ type Player struct {
 	Inventory           Inventory
 	baseStats           Stats
 	auxiliaryItemEffect Stats
-}
-
-// PlayerList is the list of all players in the game.
-var PlayerList []Player
-
-func init() {
-	PlayerList = append(PlayerList, NewPlayer("Adrian", 1), NewPlayer("Jack", 2))
 }
 
 // NewPlayer creates and initializes a new player with the correct default values and given name.
@@ -93,6 +97,20 @@ func NewEnemyTrainer() Player {
 	player.UpdateStats()
 
 	return player
+}
+
+// AppendPlayer is a wrapping method which encapsulates other logic that is mandatory to perform when extending the player slice. Should be used like append.
+func AppendPlayer(players []Player, player Player) []Player {
+	players = append(players, player)
+	savePlayer(players)
+	return players
+}
+
+func savePlayer(players []Player) error {
+	if err := persist.Save("players", players); err != nil {
+		return err
+	}
+	return nil
 }
 
 // Reset changes everything but the name back to training or default specifications based on the reset type provided.
@@ -287,7 +305,7 @@ func (player *Player) handleChangeTurn() {
 // Listen will listen for events and act accordingly.
 func Listen() {
 	for {
-		if event, ok := <-events.EventStream; ok {
+		if event, ok := <-events.GlobalEventStream; ok {
 			if event == "NextTurn" {
 				for _, p := range PlayerList {
 					p.handleChangeTurn()

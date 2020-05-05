@@ -34,7 +34,7 @@ func (shop *Shop) BuyArmorItem(player *Player) error {
 	if err != nil {
 		return err
 	}
-	shop.Inventory[1] = DamageItem
+	shop.Inventory[1] = ArmorItem
 	return nil
 }
 
@@ -45,7 +45,7 @@ func (shop *Shop) BuyHealthItem(player *Player) error {
 	if err != nil {
 		return err
 	}
-	shop.Inventory[2] = DamageItem
+	shop.Inventory[2] = HealthItem
 	return nil
 }
 
@@ -56,6 +56,6 @@ func (shop *Shop) BuyAuxiliaryItem(player *Player) error {
 	if err != nil {
 		return err
 	}
-	shop.Inventory[3] = DamageItem
+	shop.Inventory[3] = AuxiliaryItem
 	return nil
 }
